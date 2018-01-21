@@ -113,6 +113,15 @@ int main(int argc, char **argv)
     double *y, *x, *z, h, *kernel, *i_vectors, *norm;
     double *d_y, *d_x, *d_h, *d_kernel, *d_i_vectors, *d_norm;
     int size_double = SIZE * DIMENSIONS * sizeof(double);
+	
+	if (argc == 2)
+	{
+		h = atof(argv[1]);
+	}
+	else
+	{
+		 h = 1.0;
+	}
 
     y = (double *)malloc(size_double);
     x = (double *)malloc(size_double);
@@ -140,8 +149,6 @@ int main(int argc, char **argv)
     {
         x[i] = y[i];
     }
-
-    h = 1.0;
 
     cudaMalloc((void **)&d_y, size_double);
     cudaMalloc((void **)&d_x, size_double);
@@ -194,7 +201,7 @@ int main(int argc, char **argv)
 
     free(y);
     free(x);
-	free(z);
+    free(z);
     free(kernel);
     free(i_vectors);
     free(norm);
