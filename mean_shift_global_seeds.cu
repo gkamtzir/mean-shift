@@ -194,7 +194,7 @@ int main(int argc, char **argv)
 
     free(y);
     free(x);
-	free(z);
+    free(z);
     free(kernel);
     free(i_vectors);
     free(norm);
