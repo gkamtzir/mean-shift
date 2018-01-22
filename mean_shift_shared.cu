@@ -4,8 +4,15 @@
 #include <sys/time.h>
 #include <cuda.h>
 
-#define SIZE 600
-#define DIMENSIONS 2
+#ifdef A
+    #define DATASET 1
+    #define SIZE 600
+    #define DIMENSIONS 2
+#else
+    #define DATASET 2
+    #define SIZE 210
+    #define DIMENSIONS 7
+#endif
 
 __global__ void mean_shift(double *y, double *x, double *h)
 {
@@ -114,24 +121,43 @@ __global__ void mean_shift(double *y, double *x, double *h)
 int main(int argc, char **argv)
 {
     FILE *file;
+    char data_file_name[64], results_file_name[64];
     double *y, *x, *z, h;
     double *d_y, *d_x, *d_h;
     int size_double = SIZE * DIMENSIONS * sizeof(double);
-	
+
 	if (argc == 2)
 	{
 		h = atof(argv[1]);
 	}
 	else
 	{
-		 h = 1.0;
+        if (DATASET == 1)
+        {
+            h = 1.0;
+        }
+        else
+        {
+            h = 1.4565;
+        }
 	}
+
+    if (DATASET == 1)
+    {
+        sprintf(data_file_name, "data_cuda.bin");
+        sprintf(results_file_name, "results_shared.bin");
+    }
+    else
+    {
+        sprintf(data_file_name, "data_cuda_seeds.bin");
+        sprintf(results_file_name, "results_shared_seeds.bin");
+    }
 
     y = (double *)malloc(size_double);
     x = (double *)malloc(size_double);
     z = (double *)malloc(size_double);
 
-    file = fopen("data_cuda.bin", "rb");
+    file = fopen(data_file_name, "rb");
     if (file == NULL)
     {
         printf("Could not open file\n");
@@ -171,12 +197,12 @@ int main(int argc, char **argv)
     gettimeofday (&endwtime, NULL);
 
     cudaMemcpy(z, d_y, size_double, cudaMemcpyDeviceToHost);
-	
+
     double exec_time = (double)((endwtime.tv_usec - startwtime.tv_usec)/1.0e6
     + endwtime.tv_sec - startwtime.tv_sec);
     printf("Runtime: %.14f \n", exec_time);
 
-    file = fopen("results_shared.bin", "wb");
+    file = fopen(results_file_name, "wb");
     if (file == NULL)
     {
         printf("Could not open file\n");
