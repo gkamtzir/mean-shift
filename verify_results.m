@@ -14,7 +14,7 @@ close all;
 
 % mean shift options
 h = 1.0;
-%h =  2.12;
+%h =  2.125;
 optMeanShift.epsilon = 1e-6;
 optMeanShift.verbose = true;
 optMeanShift.display = true;

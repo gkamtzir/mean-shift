@@ -138,7 +138,7 @@ int main(int argc, char **argv)
 		}
 		else
 		{
-			h = 2.12;
+			h = 2.125;
 		}
 	}
 
