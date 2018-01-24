@@ -128,14 +128,14 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-        if (DATASET == 1)
-        {
-            h = 1.0;
-        }
-        else
-        {
-            h = 1.4565;
-        }
+		if (DATASET == 1)
+		{
+			h = 1.0;
+		}
+		else
+		{
+			h = 1.4565;
+		}
 	}
 
     if (DATASET == 1)
