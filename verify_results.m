@@ -52,9 +52,10 @@ results = fread(fileID,[dimensions number_of_points],'double');
 fclose(fileID);
 results = results.';
 
-figure('name', 'original_data')
-scatter(x(:,1),x(:,2), 8, l);
-
+if dimensions == 2
+    figure('name', 'original_data')
+    scatter(x(:,1),x(:,2), 8, l);
+end
 
 %% PERFORM MEAN SHIFT
 
