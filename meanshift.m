@@ -88,7 +88,12 @@ function y = meanshift(x, h, varargin)
     W      = rangesearch2sparse( I, D );
 
     % compute kernel matrix
-    W = spfun( @(x) exp( -x / (2*h^2) ), W );
+    W = spfun( @(x) exp( -x / (2*h) ), W );
+
+    if iter == 1
+        % make sure diagonal elements are 1
+        W = W + spdiags( ones(n,1), 0, n, n );
+    end
 
     % compute new y vector
     y_new = W * x;
@@ -210,8 +215,9 @@ end
 %         added an if statement to the part with
 %         the diagonal ones because this should
 %         happen only after the first iteration.
+%         I also corrected kernel\'s denominator
+%         from (2 * h^2) to (2 * h) because h = σ^2.
 %         I DO NOT OWN THE SCRIPT.
-%
 %
 %   0.2 (Jan 04, 2018) - Dimitris
 %       * FIX: distance should be squared euclidean

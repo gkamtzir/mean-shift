@@ -19,7 +19,7 @@ __global__ void mean_shift(double *y, double *x, double *h, double *kernel, doub
   //Thread scoped variables.
   int basic_index = blockIdx.x * (DIMENSIONS);
   int index = threadIdx.x * (DIMENSIONS);
-  double e = 0.0001;
+  double e = 0.000001;
   double factor;
 
   //Initializing the norm.
@@ -35,7 +35,7 @@ __global__ void mean_shift(double *y, double *x, double *h, double *kernel, doub
         factor += (y[basic_index + i] - x[index + i])*(y[basic_index + i] - x[index + i]);
     }
 
-    if (sqrt(factor) > *h*(*h))
+    if (factor > *h*(*h))
     {
       kernel[blockIdx.x * SIZE + threadIdx.x] = 0.0;
       for (int i = 0; i < (DIMENSIONS); i++)
@@ -45,7 +45,7 @@ __global__ void mean_shift(double *y, double *x, double *h, double *kernel, doub
     }
     else
     {
-      factor = exp(-(factor)/(2* (*h) * (*h)));
+      factor = exp(-(factor)/(2 * (*h)));
 
       kernel[blockIdx.x * SIZE + threadIdx.x] = factor;
 
@@ -134,7 +134,7 @@ int main(int argc, char **argv)
 		}
 		else
 		{
-			h = 1.4565;
+			h = 2.12;
 		}
 	}
 

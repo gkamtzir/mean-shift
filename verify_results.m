@@ -13,9 +13,9 @@ close all;
 %% PARAMETERS
 
 % mean shift options
-h = 1.0 * 1.0;
-%h = 1.4565 * 1.4565;
-optMeanShift.epsilon = 1e-4;
+h = 1.0;
+%h =  2.12;
+optMeanShift.epsilon = 1e-6;
 optMeanShift.verbose = true;
 optMeanShift.display = true;
 
@@ -52,10 +52,9 @@ results = fread(fileID,[dimensions number_of_points],'double');
 fclose(fileID);
 results = results.';
 
-if dimensions == 2
-    figure('name', 'original_data')
-    scatter(x(:,1),x(:,2), 8, l);
-end
+figure('name', 'original_data')
+scatter(x(:,1),x(:,2), 8, l);
+
 
 %% PERFORM MEAN SHIFT
 
@@ -73,7 +72,7 @@ wrong_point = 0;
 
 for i = 1:number_of_points
    for j = 1:dimensions
-       if abs(y(i,j) - results(i,j)) > 1e-1
+       if abs(y(i,j) - results(i,j)) > optMeanShift.epsilon
            wrong_point = 1;
            break;
        end
